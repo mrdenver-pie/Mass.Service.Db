@@ -7,19 +7,67 @@ using System.Xml.Linq;
 
 namespace Mass.Service.Db.Utilities
 {
+
+//"<pollingRequestData>";
+//"      <connectionData>";
+//"          <serverName>sdisssql01</serverName>";
+//"          <catalogName>";
+//"          </catalogName>";
+//"          <userName>";
+//"          </userName>";
+//"          <password>";
+//"          </password>";
+//"          <serverType>";
+//"          </serverType>";
+//"      </connectionData>";
+//"      <sqlRequest>";
+//"          <sqlStatement>";
+//"          </sqlStatement>";
+//"          <sqlParameters>";
+//"              <sqlParameter>";
+//"                  <name>";
+//"                  </name>";
+//"                  <value>";
+//"                  </value>";
+//"              </sqlParameter>";
+//"          </sqlParameters>";
+//"      </sqlRequest>";
+//"      <responseCriterian>";
+//"         <redCriterian>";
+//"         </redCriterian>";
+//"          <yellowCriterian>";
+//"         </yellowCriterian>";
+//"          <greenCriterian>";
+//"          </greenCriterian>";
+//"      </responseCriterian>";
+//" </pollingRequestData>";
+
     public class XmlUtility
     {
-        public string Request { get; }
+        private XElement _elements;
+
+        public XmlUtility(string xmlRequest)
+        {
+            _elements = XElement.Parse(xmlRequest);
+        }
 
         public string ServerName
         {
             get
             {
-                XElement elements = XElement.Parse(Request);
+                string _serverName = "";
 
-                var serverName = from element in elements.Descendants()
+                var elements = from element in _elements.Descendants("connectionData")
+                                 select element;
 
-            };
+                foreach (var element in elements)
+                {
+                    var xElement = element.Element("serverName");
+                    if (xElement != null) _serverName = xElement.Value;
+                }
+
+                return _serverName;
+            }
         }
 
         public string CatalogName { get; }
