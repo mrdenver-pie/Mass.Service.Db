@@ -9,13 +9,16 @@ namespace Mass.Service.Db.Utilities
 {
     public class XmlUtility
     {
-        private XElement elements { get;  set; }
+        public string Request { get; }
 
         public string ServerName
         {
             get
             {
-                
+                XElement elements = XElement.Parse(Request);
+
+                var serverName = from element in elements.Descendants()
+
             };
         }
 
