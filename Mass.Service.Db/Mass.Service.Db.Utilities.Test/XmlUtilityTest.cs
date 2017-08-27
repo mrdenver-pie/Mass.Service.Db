@@ -13,15 +13,11 @@ namespace Mass.Service.Db.Utilities.Test
         {
             _elementsString = "<pollingRequestData>";
             _elementsString += "      <connectionData>";
-            _elementsString += "          <serverName>sdisssql01</serverName>";
-            _elementsString += "          <catalogName>";
-            _elementsString += "          </catalogName>";
-            _elementsString += "          <userName>";
-            _elementsString += "          </userName>";
-            _elementsString += "          <password>";
-            _elementsString += "          </password>";
-            _elementsString += "          <serverType>";
-            _elementsString += "          </serverType>";
+            _elementsString += "          <serverName></serverName>";
+            _elementsString += "          <catalogName>MyUiEmployer</catalogName>";
+            _elementsString += "          <userName>MyUiEmployerUser</userName>";
+            _elementsString += "          <password>MyUiEmployerUser</password>";
+            _elementsString += "          <serverType>SQL Server</serverType>";
             _elementsString += "      </connectionData>";
             _elementsString += "      <sqlRequest>";
             _elementsString += "          <sqlStatement>";
@@ -50,13 +46,95 @@ namespace Mass.Service.Db.Utilities.Test
         [TestMethod]
         public void GetServerNameTest()
         {
-            XmlUtility xmlUtility = new XmlUtility(_elementsString);
-            string serverNameToTest = "sdisssql01";
-            string serverNameTested = "";
+            try
+            {
+                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                string serverNameToTest = "sdisssql01";
+                string serverNameTested = "";
 
-            serverNameTested = xmlUtility.ServerName;
-            Assert.AreEqual(serverNameToTest, serverNameTested);
+                serverNameTested = xmlUtility.ServerName;
+                Assert.AreEqual(serverNameToTest, serverNameTested);
 
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("ERROR 1 - Invalid Server Name", e.Message);
+            }
+
+
+        }
+
+        [TestMethod]
+        public void GetCatalogNameTest()
+        {
+            try
+            {
+                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                string catalogNameToTest = "MyUiEmployer";
+                string catalogNameTested = "";
+
+                catalogNameTested = xmlUtility.CatalogName;
+                Assert.AreEqual(catalogNameToTest, catalogNameTested);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("ERROR 2 - Invalid Catalog Name", e.Message);
+            }
+
+        }
+
+        [TestMethod]
+        public void GetUserNameTest()
+        {
+            try
+            {
+                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                string userNameToTest = "MyUiEmployerUser";
+                string userNameTested = "";
+
+                userNameTested = xmlUtility.UserName;
+                Assert.AreEqual(userNameToTest, userNameTested);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("ERROR 3 - Invalid User Name", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public void GetPasswordTest()
+        {
+            try
+            {
+                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                string passwordToTest = "MyUiEmployerUser";
+                string passwordTested = "";
+
+                passwordTested = xmlUtility.Password;
+                Assert.AreEqual(passwordToTest, passwordTested);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("ERROR 4 - Invalid Password", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public void GetServerTypeTest()
+        {
+            try
+            {
+                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                string serverTypeToTest = "SQL Server";
+                string serverTypeTested = "";
+
+                serverTypeTested = xmlUtility.ServerType;
+                Assert.AreEqual(serverTypeToTest, serverTypeTested);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("ERROR 5 - Invalid Server Type", e.Message);
+            }
         }
     }
 }

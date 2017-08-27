@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace Mass.Service.Db.Utilities
 {
@@ -11,8 +12,7 @@ namespace Mass.Service.Db.Utilities
 //"<pollingRequestData>";
 //"      <connectionData>";
 //"          <serverName>sdisssql01</serverName>";
-//"          <catalogName>";
-//"          </catalogName>";
+//"          <catalogName></catalogName>";
 //"          <userName>";
 //"          </userName>";
 //"          <password>";
@@ -55,25 +55,159 @@ namespace Mass.Service.Db.Utilities
         {
             get
             {
-                string _serverName = "";
+                bool passValidation = true;
+                var serverName = GetConnectionData("serverName");
 
-                var elements = from element in _elements.Descendants("connectionData")
-                                 select element;
-
-                foreach (var element in elements)
+                if (serverName.Count() > 1)
                 {
-                    var xElement = element.Element("serverName");
-                    if (xElement != null) _serverName = xElement.Value;
+                    passValidation = false;
                 }
 
-                return _serverName;
+                if (String.IsNullOrEmpty(serverName.FirstOrDefault()))
+                {
+                    passValidation = false;
+                }
+
+                var match = MatchAlphaNumericCharacters(serverName.FirstOrDefault());
+                if (!match.Success)
+                {
+                    passValidation = false;
+                }
+
+                if (!passValidation)
+                {
+                    Exception ex = new Exception("ERROR 1 - Invalid Server Name");
+                    throw ex;
+                }
+
+                return serverName.FirstOrDefault();
             }
         }
 
-        public string CatalogName { get; }
-        public string UserName { get; }
-        public string Password { get; }
-        public string ServerType { get; }
+        public string CatalogName
+        {
+            get
+            {
+                bool passValidation = true;
+                var catalogName = GetConnectionData("catalogName");
+
+                if (catalogName.Count() > 1)
+                {
+                    passValidation = false;
+                }
+
+                if (String.IsNullOrEmpty(catalogName.FirstOrDefault()))
+                {
+                    passValidation = false;
+                }
+
+                var match = MatchAlphaNumericCharacters(catalogName.FirstOrDefault());
+                if (!match.Success)
+                {
+                    passValidation = false;
+                }
+
+                if (!passValidation)
+                {
+                    Exception ex = new Exception("ERROR 2 - Invalid Catalog Name");
+                    throw ex;
+                }
+                return catalogName.FirstOrDefault();
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                bool passValidation = true;
+                var userName = GetConnectionData("userName");
+
+                if (userName.Count() > 1)
+                {
+                    passValidation = false;
+                }
+
+                if (String.IsNullOrEmpty(userName.FirstOrDefault()))
+                {
+                    passValidation = false;
+                }
+
+                var match = MatchAlphaNumericCharacters(userName.FirstOrDefault());
+                if (!match.Success)
+                {
+                    passValidation = false;
+                }
+
+                if (!passValidation)
+                {
+                    Exception ex = new Exception("ERROR 3 - Invalid User Name");
+                    throw ex;
+                }
+
+                return userName.FirstOrDefault();
+            }
+        }
+
+        public string Password
+        {
+            get
+            {
+                bool passValidation = true;
+                var password = GetConnectionData("password");
+
+                if (password.Count() > 1)
+                {
+                    passValidation = false;
+                }
+
+                if (String.IsNullOrEmpty(password.FirstOrDefault()))
+                {
+                    passValidation = false;
+                }
+
+                if (!passValidation)
+                {
+                    Exception ex = new Exception("ERROR 4 - Invalid Password");
+                    throw ex;
+                }
+
+                return password.FirstOrDefault();
+            }
+        }
+
+        public string ServerType
+        {
+            get
+            {
+                bool passValidation = true;
+                var serverType = GetConnectionData("serverType");
+
+                if (serverType.Count() > 1)
+                {
+                    passValidation = false;
+                }
+
+                if (String.IsNullOrEmpty(serverType.FirstOrDefault()))
+                {
+                    passValidation = false;
+                }
+
+                var match = MatchAlphaNumericCharacters("severType");
+                if (!match.Success)
+                {
+                    passValidation = false;
+                }
+
+                if (!passValidation)
+                {
+                    Exception ex = new Exception("ERROR 5 - Invalid Server Type");
+                    throw ex;
+                }
+
+                return serverType.FirstOrDefault();
+            }
+        }
 
         public string SqlStatement { get; }
         public Dictionary<string, string> SqlParameters { get; }
@@ -83,6 +217,29 @@ namespace Mass.Service.Db.Utilities
         public string YellowCriteria { get; }
         public string GreenCriteria { get; }
 
+        private static Match MatchAlphaNumericCharacters(string value)
+        {
+            Regex regex = new Regex(@"^[a-zA-Z0-9]*$");
+            Match match = regex.Match(value);
+            return match;
+        }
+        private List<string> GetConnectionData(string value)
+        {
+            var elements = from element in _elements.Descendants("connectionData")
+                select element;
+
+            List<string> rtnList = new List<string>();
+            foreach (var element in elements)
+            {
+                var xElement = element.Element(value);
+                if (xElement != null)
+                {
+                    rtnList.Add(xElement.Value);
+                }
+            }
+            return rtnList.ToList<string>();
+
+        }
 
     }
 }
