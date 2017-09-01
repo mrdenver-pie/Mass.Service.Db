@@ -9,7 +9,6 @@ namespace Mass.Service.Db.NUnit
     {
         private string _elementsString = "";
 
-        [TestFixtureSetup]
         public void Init()
         {
             _elementsString = "<pollingRequestData>";
