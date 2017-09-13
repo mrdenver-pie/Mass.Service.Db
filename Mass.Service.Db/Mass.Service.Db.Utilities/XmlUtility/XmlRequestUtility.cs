@@ -208,7 +208,7 @@ namespace Mass.Service.Db.Utilities.XmlUtility
         }
 
         public string SqlStatement { get; }
-        public Dictionary<string, string> SqlParameters { get; }
+        public List<ParmeterInfo> SqlParameters { get; }
 
 
         public string RedCriteria { get; }
