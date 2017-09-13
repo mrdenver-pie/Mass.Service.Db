@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using Mass.Service.Db.Utilities;
+using Mass.Service.Db.Utilities.XmlUtility;
 
 namespace Mass.Service.Db.NUnit
 {
@@ -49,11 +50,11 @@ namespace Mass.Service.Db.NUnit
         {
             try
             {
-                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
                 string serverNameToTest = "sdisssql01";
                 string serverNameTested = "";
 
-                serverNameTested = xmlUtility.ServerName;
+                serverNameTested = xmlRequestUtility.ServerName;
                 Assert.AreEqual(serverNameToTest, serverNameTested);
 
             }
@@ -68,11 +69,11 @@ namespace Mass.Service.Db.NUnit
         {
             try
             {
-                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
                 string catalogNameToTest = "MyUiEmployer";
                 string catalogNameTested = "";
 
-                catalogNameTested = xmlUtility.CatalogName;
+                catalogNameTested = xmlRequestUtility.CatalogName;
                 Assert.AreEqual(catalogNameToTest, catalogNameTested);
             }
             catch (Exception e)
@@ -87,11 +88,11 @@ namespace Mass.Service.Db.NUnit
         {
             try
             {
-                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
                 string userNameToTest = "MyUiEmployerUser";
                 string userNameTested = "";
 
-                userNameTested = xmlUtility.UserName;
+                userNameTested = xmlRequestUtility.UserName;
                 Assert.AreEqual(userNameToTest, userNameTested);
             }
             catch (Exception e)
@@ -105,11 +106,11 @@ namespace Mass.Service.Db.NUnit
         {
             try
             {
-                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
                 string passwordToTest = "MyUiEmployerUser";
                 string passwordTested = "";
 
-                passwordTested = xmlUtility.Password;
+                passwordTested = xmlRequestUtility.Password;
                 Assert.AreEqual(passwordToTest, passwordTested);
             }
             catch (Exception e)
@@ -123,11 +124,11 @@ namespace Mass.Service.Db.NUnit
         {
             try
             {
-                XmlUtility xmlUtility = new XmlUtility(_elementsString);
+                XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
                 string serverTypeToTest = "SQL Server";
                 string serverTypeTested = "";
 
-                serverTypeTested = xmlUtility.ServerType;
+                serverTypeTested = xmlRequestUtility.ServerType;
                 Assert.AreEqual(serverTypeToTest, serverTypeTested);
             }
             catch (Exception e)

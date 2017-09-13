@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
-namespace Mass.Service.Db.Utilities
+namespace Mass.Service.Db.Utilities.XmlUtility
 {
 
 //"<pollingRequestData>";
@@ -42,11 +40,11 @@ namespace Mass.Service.Db.Utilities
 //"      </responseCriterian>";
 //" </pollingRequestData>";
 
-    public class XmlUtility
+    public class XmlRequestUtility
     {
         private XElement _elements;
 
-        public XmlUtility(string xmlRequest)
+        public XmlRequestUtility(string xmlRequest)
         {
             _elements = XElement.Parse(xmlRequest);
         }
