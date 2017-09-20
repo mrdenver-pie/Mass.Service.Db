@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -207,8 +208,54 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             }
         }
 
-        public string SqlStatement { get; }
-        public List<ParmeterInfo> SqlParameters { get; }
+        public string SqlStatement {
+            get
+            {
+                bool passValidation = true;
+                var sqlStatement = GetSqlRequest("sqlStatement");
+
+                if (sqlStatement.Count() > 1)
+                {
+                    passValidation = false;
+                }
+
+                if (String.IsNullOrEmpty(sqlStatement.FirstOrDefault()))
+                {
+                    passValidation = false;
+                }
+
+                if (!passValidation)
+                {
+                    Exception ex = new Exception("ERROR 6 - Invalid SQL Statement");
+                }
+
+                return sqlStatement.FirstOrDefault();
+            } 
+        }
+
+        public List<SqlParmeterInfo> SqlParameters
+        {
+            get
+            {
+                bool passValidation = false;
+                var sqlParameters = GetSqlRequestParameters("sqlParameters");
+            }
+        }
+
+        private List<ParameterInfo> GetSqlRequestParameters(string sqlparameters)
+        {
+            var elements = from element in _elements.Descendants("sqlParameters")
+                select element;
+            
+            /*
+            List<ParameterInfo> rtnList = new List<ParameterInfo>();
+            foreach (var element in elements)
+            {
+                SqlParmeterInfo sqlParmInfo = new SqlParmeterInfo();
+                sqlParmInfo.ParameterName = element.
+            }
+            */
+        }
 
 
         public string RedCriteria { get; }
@@ -221,9 +268,20 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             Match match = regex.Match(value);
             return match;
         }
+        
         private List<string> GetConnectionData(string value)
         {
-            var elements = from element in _elements.Descendants("connectionData")
+            return GetElementData("connectionData", value);
+        }
+
+        private List<string> GetSqlRequest(string value)
+        {
+            return GetElementData("sqlRequest", value);
+        }
+        
+        private List<string> GetElementData(string elementKey, string value)
+        {
+            var elements = from element in _elements.Descendants(elementKey)
                 select element;
 
             List<string> rtnList = new List<string>();
@@ -236,8 +294,6 @@ namespace Mass.Service.Db.Utilities.XmlUtility
                 }
             }
             return rtnList.ToList<string>();
-
         }
-
     }
 }

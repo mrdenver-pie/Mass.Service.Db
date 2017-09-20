@@ -25,12 +25,9 @@ namespace Mass.Service.Db.NUnit
             _elementsString += "          <sqlStatement>";
             _elementsString += "          </sqlStatement>";
             _elementsString += "          <sqlParameters>";
-            _elementsString += "              <sqlParameter>";
-            _elementsString += "                  <name>";
-            _elementsString += "                  </name>";
-            _elementsString += "                  <value>";
-            _elementsString += "                  </value>";
-            _elementsString += "              </sqlParameter>";
+            _elementsString += "              <sqlParameter><sqlParameter></sqlParameter><Name></Name><Value></Value></sqlParameter>";
+            _elementsString += "              <sqlParameter><sqlParameter></sqlParameter><Name></Name><Value></Value></sqlParameter>";
+            
             _elementsString += "          </sqlParameters>";
             _elementsString += "      </sqlRequest>";
             _elementsString += "      <responseCriterian>";

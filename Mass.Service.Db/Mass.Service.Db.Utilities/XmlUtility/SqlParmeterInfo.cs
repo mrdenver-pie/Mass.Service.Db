@@ -1,6 +1,6 @@
 ﻿namespace Mass.Service.Db.Utilities.XmlUtility
 {
-    public class ParmeterInfo
+    public class SqlParmeterInfo
     {
         public string ParameterName { get; }
         public string ParameterType { get; }
