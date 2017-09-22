@@ -2,8 +2,8 @@
 {
     public class SqlParmeterInfo
     {
-        public string ParameterName { get; }
-        public string ParameterType { get; }
-        public string ParameterValue { get; }
+        public string ParameterName { get; set; }
+        public string ParameterType { get; set; }
+        public string ParameterValue { get; set; }
     }
 }

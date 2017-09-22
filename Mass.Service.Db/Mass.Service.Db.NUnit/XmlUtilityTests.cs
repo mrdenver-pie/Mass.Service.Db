@@ -22,12 +22,24 @@ namespace Mass.Service.Db.NUnit
             _elementsString += "          <serverType>SQL Server</serverType>";
             _elementsString += "      </connectionData>";
             _elementsString += "      <sqlRequest>";
-            _elementsString += "          <sqlStatement>";
-            _elementsString += "          </sqlStatement>";
+            _elementsString += "          <sqlStatement></sqlStatement>";
             _elementsString += "          <sqlParameters>";
-            _elementsString += "              <sqlParameter><sqlParameter></sqlParameter><Name></Name><Value></Value></sqlParameter>";
-            _elementsString += "              <sqlParameter><sqlParameter></sqlParameter><Name></Name><Value></Value></sqlParameter>";
-            
+            _elementsString += "              <sqlParameter>" +
+                                               "<Name>ABC</Name>" +
+                                               "<Value>1200</Value>" +
+                                               "</sqlParameter>";
+            _elementsString += "              <sqlParameter>" +
+                                               "<Name>XYZ</Name>" +
+                                               "<Value>Mississippi</Value>" +
+                                               "</sqlParameter>";
+            _elementsString += "              <sqlParameter>" +
+                               "                <Name>mammals</Name>" +
+                               "                <Value>elephant</Value>" +
+                               "                </sqlParameter>";
+            _elementsString += "              <sqlParameter>" +
+                               "                <Name>customer</Name>" +
+                               "                <Value>Harold</Value>" +
+                               "                </sqlParameter>";          
             _elementsString += "          </sqlParameters>";
             _elementsString += "      </sqlRequest>";
             _elementsString += "      <responseCriterian>";
@@ -132,6 +144,23 @@ namespace Mass.Service.Db.NUnit
             {
                 Assert.AreEqual("ERROR 5 - Invalid Server Type", e.Message);
             }
-        }        
+        }
+
+        [Test]
+        public void GetSqlParameters()
+        {
+            try
+            {
+                XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
+                var parameterList = xmlRequestUtility.SqlParameters;
+                
+                Assert.AreEqual(4, parameterList.Count);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }

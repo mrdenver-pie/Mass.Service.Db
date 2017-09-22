@@ -238,23 +238,43 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             get
             {
                 bool passValidation = false;
-                var sqlParameters = GetSqlRequestParameters("sqlParameters");
+                List<SqlParmeterInfo> sqlParameters = GetSqlRequestParameters("sqlParameters");
+
+                return sqlParameters;
             }
         }
 
-        private List<ParameterInfo> GetSqlRequestParameters(string sqlparameters)
+        private List<SqlParmeterInfo> GetSqlRequestParameters(string sqlparameters)
         {
+            XElement xElement;
+            
             var elements = from element in _elements.Descendants("sqlParameters")
                 select element;
             
-            /*
-            List<ParameterInfo> rtnList = new List<ParameterInfo>();
+            
+            List<SqlParmeterInfo> rtnList = new List<SqlParmeterInfo>();
             foreach (var element in elements)
             {
                 SqlParmeterInfo sqlParmInfo = new SqlParmeterInfo();
-                sqlParmInfo.ParameterName = element.
+                
+                xElement = element.Element("sqlParameter");
+                if (xElement != null)
+                {
+                    var parmName = xElement.Element("Name");
+                    if (parmName != null)
+                    {
+                        sqlParmInfo.ParameterName = parmName.Value;
+                    }
+                    else
+                    {
+                         Exception ex = new Exception("ERROR 7 - Parameter Name can not be null");
+                    }
+                }
+
             }
-            */
+            
+
+            return rtnList;
         }
 
 
