@@ -261,7 +261,7 @@ namespace Mass.Service.Db.Utilities.XmlUtility
                 if (xElement != null)
                 {
                     var parmName = xElement.Element("Name");
-                    if (parmName != null)
+                    if (!String.IsNullOrEmpty(parmName.Value))
                     {
                         sqlParmInfo.ParameterName = parmName.Value;
                     }
@@ -269,11 +269,18 @@ namespace Mass.Service.Db.Utilities.XmlUtility
                     {
                          Exception ex = new Exception("ERROR 7 - Parameter Name can not be null");
                     }
+                    var parmValue = xElement.Element("Value");
+                    if (!String.IsNullOrEmpty(parmValue.Value))
+                    {
+                        sqlParmInfo.ParameterValue = parmValue.Value;
+                    }
+                    else
+                    {
+                        Exception ex = new Exception("ERROR 8 - Parameter Value can not be null");
+                    }
                 }
-
+                rtnList.Add(sqlParmInfo);
             }
-            
-
             return rtnList;
         }
 
