@@ -48,215 +48,221 @@ namespace Mass.Service.Db.Utilities.XmlUtility
         public XmlRequestUtility(string xmlRequest)
         {
             _elements = XElement.Parse(xmlRequest);
+
+            ServerName = GetServerName();
+            CatalogName = GetCatalongName();
+            UserName = GetUserName();
+            Password = GetPassword();
+            ServerType = GetServerType();
+            SqlStatement = GetSqlStatement();
+            SqlParameters = GetSqlParameters();
         }
 
-        public string ServerName
+        public string ServerName { get; set; }
+
+        private string GetServerName()
         {
-            get
+            bool passValidation = true;
+            var serverName = GetConnectionData("serverName");
+
+            if (serverName.Count() > 1)
             {
-                bool passValidation = true;
-                var serverName = GetConnectionData("serverName");
-
-                if (serverName.Count() > 1)
-                {
-                    passValidation = false;
-                }
-
-                if (String.IsNullOrEmpty(serverName.FirstOrDefault()))
-                {
-                    passValidation = false;
-                }
-
-                var match = MatchAlphaNumericCharacters(serverName.FirstOrDefault());
-                if (!match.Success)
-                {
-                    passValidation = false;
-                }
-
-                if (!passValidation)
-                {
-                    Exception ex = new Exception("ERROR 1 - Invalid Server Name");
-                    throw ex;
-                }
-
-                return serverName.FirstOrDefault();
+                passValidation = false;
             }
+
+            if (String.IsNullOrEmpty(serverName.FirstOrDefault()))
+            {
+                passValidation = false;
+            }
+
+            var match = MatchAlphaNumericCharacters(serverName.FirstOrDefault());
+            if (!match.Success)
+            {
+                passValidation = false;
+            }
+
+            if (!passValidation)
+            {
+                Exception ex = new Exception("ERROR 1 - Invalid Server Name");
+                throw ex;
+            }
+
+            return serverName.FirstOrDefault();
         }
 
-        public string CatalogName
+        public string CatalogName { get; set; }
+
+        private string GetCatalongName()
         {
-            get
+            bool passValidation = true;
+            var catalogName = GetConnectionData("catalogName");
+
+            if (catalogName.Count() > 1)
             {
-                bool passValidation = true;
-                var catalogName = GetConnectionData("catalogName");
-
-                if (catalogName.Count() > 1)
-                {
-                    passValidation = false;
-                }
-
-                if (String.IsNullOrEmpty(catalogName.FirstOrDefault()))
-                {
-                    passValidation = false;
-                }
-
-                var match = MatchAlphaNumericCharacters(catalogName.FirstOrDefault());
-                if (!match.Success)
-                {
-                    passValidation = false;
-                }
-
-                if (!passValidation)
-                {
-                    Exception ex = new Exception("ERROR 2 - Invalid Catalog Name");
-                    throw ex;
-                }
-                return catalogName.FirstOrDefault();
+                passValidation = false;
             }
+
+            if (String.IsNullOrEmpty(catalogName.FirstOrDefault()))
+            {
+                passValidation = false;
+            }
+
+            var match = MatchAlphaNumericCharacters(catalogName.FirstOrDefault());
+            if (!match.Success)
+            {
+                passValidation = false;
+            }
+
+            if (!passValidation)
+            {
+                Exception ex = new Exception("ERROR 2 - Invalid Catalog Name");
+                throw ex;
+            }
+            return catalogName.FirstOrDefault();
         }
 
-        public string UserName
+        public string UserName { get; set; }
+
+        private string GetUserName()
         {
-            get
+            bool passValidation = true;
+            var userName = GetConnectionData("userName");
+
+            if (userName.Count() > 1)
             {
-                bool passValidation = true;
-                var userName = GetConnectionData("userName");
-
-                if (userName.Count() > 1)
-                {
-                    passValidation = false;
-                }
-
-                if (String.IsNullOrEmpty(userName.FirstOrDefault()))
-                {
-                    passValidation = false;
-                }
-
-                var match = MatchAlphaNumericCharacters(userName.FirstOrDefault());
-                if (!match.Success)
-                {
-                    passValidation = false;
-                }
-
-                if (!passValidation)
-                {
-                    Exception ex = new Exception("ERROR 3 - Invalid User Name");
-                    throw ex;
-                }
-
-                return userName.FirstOrDefault();
+                passValidation = false;
             }
+
+            if (String.IsNullOrEmpty(userName.FirstOrDefault()))
+            {
+                passValidation = false;
+            }
+
+            var match = MatchAlphaNumericCharacters(userName.FirstOrDefault());
+            if (!match.Success)
+            {
+                passValidation = false;
+            }
+
+            if (!passValidation)
+            {
+                Exception ex = new Exception("ERROR 3 - Invalid User Name");
+                throw ex;
+            }
+
+            return userName.FirstOrDefault();
         }
 
-        public string Password
+        public string Password { get; set; }
+
+        private string GetPassword()
         {
-            get
+            bool passValidation = true;
+            var password = GetConnectionData("password");
+
+            if (password.Count() > 1)
             {
-                bool passValidation = true;
-                var password = GetConnectionData("password");
-
-                if (password.Count() > 1)
-                {
-                    passValidation = false;
-                }
-
-                if (String.IsNullOrEmpty(password.FirstOrDefault()))
-                {
-                    passValidation = false;
-                }
-
-                if (!passValidation)
-                {
-                    Exception ex = new Exception("ERROR 4 - Invalid Password");
-                    throw ex;
-                }
-
-                return password.FirstOrDefault();
+                passValidation = false;
             }
+
+            if (String.IsNullOrEmpty(password.FirstOrDefault()))
+            {
+                passValidation = false;
+            }
+
+            if (!passValidation)
+            {
+                Exception ex = new Exception("ERROR 4 - Invalid Password");
+                throw ex;
+            }
+
+            return password.FirstOrDefault();
         }
 
-        public string ServerType
+        public string ServerType { get; set; }
+
+        private string GetServerType()
         {
-            get
+            bool passValidation = true;
+            var serverType = GetConnectionData("serverType");
+
+            if (serverType.Count() > 1)
             {
-                bool passValidation = true;
-                var serverType = GetConnectionData("serverType");
-
-                if (serverType.Count() > 1)
-                {
-                    passValidation = false;
-                }
-
-                if (String.IsNullOrEmpty(serverType.FirstOrDefault()))
-                {
-                    passValidation = false;
-                }
-
-                var match = MatchAlphaNumericCharacters("severType");
-                if (!match.Success)
-                {
-                    passValidation = false;
-                }
-
-                if (!passValidation)
-                {
-                    Exception ex = new Exception("ERROR 5 - Invalid Server Type");
-                    throw ex;
-                }
-
-                return serverType.FirstOrDefault();
+                passValidation = false;
             }
-        }
 
-        public string SqlStatement {
-            get
+            if (String.IsNullOrEmpty(serverType.FirstOrDefault()))
             {
-                bool passValidation = true;
-                var sqlStatement = GetSqlRequest("sqlStatement");
+                passValidation = false;
+            }
 
-                if (sqlStatement.Count() > 1)
-                {
-                    passValidation = false;
-                }
+            var match = MatchAlphaNumericCharacters("severType");
+            if (!match.Success)
+            {
+                passValidation = false;
+            }
 
-                if (String.IsNullOrEmpty(sqlStatement.FirstOrDefault()))
-                {
-                    passValidation = false;
-                }
+            if (!passValidation)
+            {
+                Exception ex = new Exception("ERROR 5 - Invalid Server Type");
+                throw ex;
+            }
 
-                if (!passValidation)
-                {
-                    Exception ex = new Exception("ERROR 6 - Invalid SQL Statement");
-                }
-
-                return sqlStatement.FirstOrDefault();
-            } 
+            return serverType.FirstOrDefault();
         }
 
-        public List<SqlParmeterInfo> SqlParameters
+        public string SqlStatement { get; set; }
+
+        private string GetSqlStatement()
         {
-            get
-            {
-                bool passValidation = false;
-                List<SqlParmeterInfo> sqlParameters = GetSqlRequestParameters("sqlParameters");
+            bool passValidation = true;
+            var sqlStatement = GetSqlRequest("sqlStatement");
 
-                return sqlParameters;
+            if (sqlStatement.Count() > 1)
+            {
+                passValidation = false;
             }
+
+            if (String.IsNullOrEmpty(sqlStatement.FirstOrDefault()))
+            {
+                passValidation = false;
+            }
+
+            if (!passValidation)
+            {
+                Exception ex = new Exception("ERROR 6 - Invalid SQL Statement");
+            }
+
+            return sqlStatement.FirstOrDefault();
         }
+
+        public List<SqlParmeterInfo> SqlParameters { get; set; }
+
+        private List<SqlParmeterInfo> GetSqlParameters()
+        {
+            bool passValidation = false;
+            List<SqlParmeterInfo> sqlParameters = GetSqlRequestParameters("sqlParameters");
+
+            return sqlParameters;
+        }
+
+        public string RedCriteria { get; }
+        public string YellowCriteria { get; }
+        public string GreenCriteria { get; }
 
         private List<SqlParmeterInfo> GetSqlRequestParameters(string sqlparameters)
         {
             XElement xElement;
-            
+
             var elements = from element in _elements.Descendants("sqlParameters")
                 select element;
-            
-            
+
+
             List<SqlParmeterInfo> rtnList = new List<SqlParmeterInfo>();
             foreach (var element in elements)
             {
                 SqlParmeterInfo sqlParmInfo = new SqlParmeterInfo();
-                
+
                 xElement = element.Element("sqlParameter");
                 if (xElement != null)
                 {
@@ -267,7 +273,7 @@ namespace Mass.Service.Db.Utilities.XmlUtility
                     }
                     else
                     {
-                         Exception ex = new Exception("ERROR 7 - Parameter Name can not be null");
+                        Exception ex = new Exception("ERROR 7 - Parameter Name can not be null");
                     }
                     var parmValue = xElement.Element("Value");
                     if (!String.IsNullOrEmpty(parmValue.Value))
@@ -283,11 +289,6 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             }
             return rtnList;
         }
-
-
-        public string RedCriteria { get; }
-        public string YellowCriteria { get; }
-        public string GreenCriteria { get; }
 
         private static Match MatchAlphaNumericCharacters(string value)
         {
