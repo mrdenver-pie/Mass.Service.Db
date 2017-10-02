@@ -54,11 +54,40 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             UserName = GetUserName();
             Password = GetPassword();
             ServerType = GetServerType();
+
             SqlStatement = GetSqlStatement();
-            SqlParameters = GetSqlParameters();
+            SqlParameters = GetSqlRequestParameters();
+
+            RedCriteria = GetRedCriteria();
+            YellowCriteria = GetYellowCriteria();
+            GreenCriteria = GetGreenCriteria();
+        }
+
+        private string GetGreenCriteria()
+        {
+            return GetCriteria("greenCriterian");
+        }
+
+        private string GetYellowCriteria()
+        {
+            return GetCriteria("yellowCriterian");
+        }
+
+        private string GetRedCriteria()
+        {
+            return GetCriteria("redCriterian");
         }
 
         public string ServerName { get; set; }
+        public string CatalogName { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string ServerType { get; set; }
+        public string SqlStatement { get; set; }
+        public List<SqlParmeterInfo> SqlParameters { get; set; }
+        public string RedCriteria { get; set; }
+        public string YellowCriteria { get; set; }
+        public string GreenCriteria { get; set; }
 
         private string GetServerName()
         {
@@ -90,8 +119,6 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             return serverName.FirstOrDefault();
         }
 
-        public string CatalogName { get; set; }
-
         private string GetCatalongName()
         {
             bool passValidation = true;
@@ -120,8 +147,6 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             }
             return catalogName.FirstOrDefault();
         }
-
-        public string UserName { get; set; }
 
         private string GetUserName()
         {
@@ -153,8 +178,6 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             return userName.FirstOrDefault();
         }
 
-        public string Password { get; set; }
-
         private string GetPassword()
         {
             bool passValidation = true;
@@ -178,8 +201,6 @@ namespace Mass.Service.Db.Utilities.XmlUtility
 
             return password.FirstOrDefault();
         }
-
-        public string ServerType { get; set; }
 
         private string GetServerType()
         {
@@ -211,8 +232,6 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             return serverType.FirstOrDefault();
         }
 
-        public string SqlStatement { get; set; }
-
         private string GetSqlStatement()
         {
             bool passValidation = true;
@@ -236,56 +255,45 @@ namespace Mass.Service.Db.Utilities.XmlUtility
             return sqlStatement.FirstOrDefault();
         }
 
-        public List<SqlParmeterInfo> SqlParameters { get; set; }
-
-        private List<SqlParmeterInfo> GetSqlParameters()
+        private string GetCriteria(string value)
         {
-            bool passValidation = false;
-            List<SqlParmeterInfo> sqlParameters = GetSqlRequestParameters("sqlParameters");
-
-            return sqlParameters;
+            return GetElementData("responseCriterian", value).FirstOrDefault();
         }
 
-        public string RedCriteria { get; }
-        public string YellowCriteria { get; }
-        public string GreenCriteria { get; }
-
-        private List<SqlParmeterInfo> GetSqlRequestParameters(string sqlparameters)
+        private List<SqlParmeterInfo> GetSqlRequestParameters()
         {
-            XElement xElement;
-
-            var elements = from element in _elements.Descendants("sqlParameters")
+            var elements = from element in _elements.Descendants("sqlParameter")
                 select element;
 
-
             List<SqlParmeterInfo> rtnList = new List<SqlParmeterInfo>();
-            foreach (var element in elements)
+            foreach (var item in elements)
             {
-                SqlParmeterInfo sqlParmInfo = new SqlParmeterInfo();
-
-                xElement = element.Element("sqlParameter");
+                SqlParmeterInfo parm = new SqlParmeterInfo();
+                var xElement = item.Element("Name");
                 if (xElement != null)
                 {
-                    var parmName = xElement.Element("Name");
-                    if (!String.IsNullOrEmpty(parmName.Value))
+                    if (!String.IsNullOrEmpty(xElement.Value))
                     {
-                        sqlParmInfo.ParameterName = parmName.Value;
+                        parm.ParameterName = xElement.Value;
                     }
                     else
                     {
                         Exception ex = new Exception("ERROR 7 - Parameter Name can not be null");
                     }
-                    var parmValue = xElement.Element("Value");
-                    if (!String.IsNullOrEmpty(parmValue.Value))
+                }
+                xElement = item.Element("Value");
+                if (xElement != null)
+                {
+                    if (!String.IsNullOrEmpty(xElement.Value))
                     {
-                        sqlParmInfo.ParameterValue = parmValue.Value;
+                        parm.ParameterValue = xElement.Value;
                     }
                     else
                     {
                         Exception ex = new Exception("ERROR 8 - Parameter Value can not be null");
                     }
                 }
-                rtnList.Add(sqlParmInfo);
+                rtnList.Add(parm);
             }
             return rtnList;
         }

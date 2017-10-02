@@ -43,15 +43,45 @@ namespace Mass.Service.Db.NUnit
             _elementsString += "          </sqlParameters>";
             _elementsString += "      </sqlRequest>";
             _elementsString += "      <responseCriterian>";
-            _elementsString += "         <redCriterian>";
-            _elementsString += "         </redCriterian>";
-            _elementsString += "          <yellowCriterian>";
-            _elementsString += "         </yellowCriterian>";
-            _elementsString += "          <greenCriterian>";
-            _elementsString += "          </greenCriterian>";
+            _elementsString += "         <redCriterian>customer='Burt'</redCriterian>";
+            _elementsString += "          <yellowCriterian>customer='BobbyJoe'</yellowCriterian>";
+            _elementsString += "          <greenCriterian>customer='Happy Gilmore'</greenCriterian>";
             _elementsString += "      </responseCriterian>";
             _elementsString += " </pollingRequestData>";
             
+        }
+
+        [Test]
+        public void GetRedCriterianTest()
+        {
+            XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
+            string criterianToTest = "customer='Burt'";
+            string criterianTested = "";
+
+            criterianTested = xmlRequestUtility.RedCriteria;
+            Assert.AreEqual(criterianToTest, criterianTested);
+        }
+
+        [Test]
+        public void GetYellowCriteriaTest()
+        {
+            XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
+            string criterianToTest = "customer='BobbyJoe'";
+            string criterianTested = "";
+
+            criterianTested = xmlRequestUtility.YellowCriteria;
+            Assert.AreEqual(criterianToTest, criterianTested);
+        }
+
+        [Test]
+        public void GetGreenCriteriaTest()
+        {
+            XmlRequestUtility xmlRequestUtility = new XmlRequestUtility(_elementsString);
+            string criterianToTest = "customer='Happy Gilmore'";
+            string criterianTested = "";
+
+            criterianTested = xmlRequestUtility.GreenCriteria;
+            Assert.AreEqual(criterianToTest, criterianTested);
         }
 
         [Test()]
