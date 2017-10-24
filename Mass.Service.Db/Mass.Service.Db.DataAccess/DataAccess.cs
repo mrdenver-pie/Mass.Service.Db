@@ -20,6 +20,9 @@ namespace Mass.Service.Db.DataAccess
         public DataAccess(string sqlConnectionString)
             : base(sqlConnectionString)
         {
+            var type = typeof(System.Data.Entity.SqlServer.SqlProviderServices);
+            if (type == null)
+                throw new Exception("Do not remove, ensures static reference to System.Data.Entity.SqlServer");
         }
 
         // Add a DbSet for each entity type that you want to include in your model. For more information 

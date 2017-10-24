@@ -31,9 +31,14 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccessTests.cs" />
     <Compile Include="XmlUtilityTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mass.Service.Db.DataAccess\Mass.Service.Db.DataAccess.csproj">
+      <Project>{0EAA64E5-321B-481B-A53D-C9974C66A0E3}</Project>
+      <Name>Mass.Service.Db.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mass.Service.Db.Utilities\Mass.Service.Db.Utilities.csproj">
       <Project>{E86D9859-7988-4A23-98E5-8E4A0D1A7211}</Project>
       <Name>Mass.Service.Db.Utilities</Name>
