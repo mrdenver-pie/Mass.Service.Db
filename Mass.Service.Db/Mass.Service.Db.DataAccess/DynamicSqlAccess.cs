@@ -11,11 +11,16 @@ using System.Threading.Tasks;
 using Mass.Service.Db.Utilities.DatabaseUtility;
 using Mass.Service.Db.Utilities.XmlUtility;
 
+using Dapper;
+using Mass.Service.Db.DynamicClass1;
+
 namespace Mass.Service.Db.DataAccess
 {
     public class DynamicSqlAccess
     {
         private DatabaseConnectionInfo _requestConnection;
+        public static Func<DbConnection> ConnectionFactory = null;
+
         public DynamicSqlAccess(string xmlRequest)
         {
             XmlRequestUtility request = new XmlRequestUtility(xmlRequest);
@@ -27,28 +32,26 @@ namespace Mass.Service.Db.DataAccess
                 ServerType = request.ServerType,
                 UserName = request.UserName
             };
+            
+            ConnectionFactory = () => new SqlConnection(CreateConnStr(_requestConnection));
         }
 
         public string ExecuteSql()
         {
             try
             {
-                using (var context = new DataAccess(CreateConnStr(_requestConnection)))
+                using (var connection = ConnectionFactory())
                 {
+                    connection.Open();
 
                     string query = "select CityName, count(cityname) as countOfCities ";
                     query += "from application.cities ";
                     query += "group by cityname ";
                     query += "having count(cityname) > 10 and CityName = 'Middletown'";
 
-                    //var queryResults = this.ExecuteQueryDynamic(query);
-                    //var queryResult = context.Database.SqlQuery<dynamic>(query).ToList();
-                    List<dynamic> queryResult = DynamicListFromSql(context, query, new Dictionary<string, object> { { "a", true }, { "b", false } }).ToList();
+                    var invoices = connection.Query<IDynamicClass1>(query).ToList();
 
-
-                    string expression = "Middletown = 16";
-                    string evaluateExpression = expression.Replace("Middleton", queryResult[1]);
-
+                    Console.WriteLine("City Name: " + invoices[0].CityName);
 
                     return "";
                 }
