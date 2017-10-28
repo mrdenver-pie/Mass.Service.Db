@@ -12,7 +12,6 @@ using Mass.Service.Db.Utilities.DatabaseUtility;
 using Mass.Service.Db.Utilities.XmlUtility;
 
 using Dapper;
-using Mass.Service.Db.DynamicClass1;
 
 namespace Mass.Service.Db.DataAccess
 {
@@ -49,9 +48,7 @@ namespace Mass.Service.Db.DataAccess
                     query += "group by cityname ";
                     query += "having count(cityname) > 10 and CityName = 'Middletown'";
 
-                    var invoices = connection.Query<IDynamicClass1>(query).ToList();
-
-                    Console.WriteLine("City Name: " + invoices[0].CityName);
+                    var invoices = connection.Query(query).ToList();
 
                     return "";
                 }
