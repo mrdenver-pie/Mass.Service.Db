@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -58,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mass.Service.Db.DynamicClass1\Mass.Service.Db.DynamicClass1.csproj">
+      <Project>{83ac9f3e-e78e-42fe-95dd-79eff059aab7}</Project>
+      <Name>Mass.Service.Db.DynamicClass1</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mass.Service.Db.Utilities\Mass.Service.Db.Utilities.csproj">
       <Project>{e86d9859-7988-4a23-98e5-8e4a0d1a7211}</Project>
       <Name>Mass.Service.Db.Utilities</Name>
